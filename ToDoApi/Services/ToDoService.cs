@@ -3,7 +3,7 @@ using ToDoApi.Models.DTOs;
 
 namespace ToDoApi.Services
 {
-    public class ToDoService
+    public class ToDoService : IToDoService
     {
         private readonly List<ToDo> _Tasks = new();
         private int _nextId = 1;
