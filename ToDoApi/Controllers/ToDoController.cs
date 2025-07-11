@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoApi.Models;
 using ToDoApi.Models.DTOs;
+using ToDoApi.Services;
 
 namespace ToDoApi.Controllers
 {
@@ -8,19 +9,23 @@ namespace ToDoApi.Controllers
     [Route("api/[controller]")]
     public class ToDoController : ControllerBase
     {
-        private static List<ToDo> toDoList = new List<ToDo>();
-        private static int nextId = 1;
+        private readonly ToDoService _Service;
+
+        public ToDoController(ToDoService service)
+        {
+            _Service = service;
+        }
 
         [HttpGet]
         public ActionResult<IEnumerable<ToDo>> GetAll()
         {
-            return Ok(toDoList);
+            return Ok(_Service.GetAll());
         }
 
         [HttpGet("{id}")]
         public ActionResult<ToDo> GetById(int id)
         {
-            var task = toDoList.FirstOrDefault(t => t.Id == id);
+            var task = _Service.GetById(id);
             if (task == null) return NotFound();
             return Ok(task);
         }
@@ -29,39 +34,23 @@ namespace ToDoApi.Controllers
         public ActionResult<ToDo> Create([FromBody] CreateToDoDto input)
         {
 
-            var task = new ToDo
-            {
-                Id = nextId++,
-                Title = input.Title,
-                Description = input.Description,
-                Status = false
-            };
-
-            toDoList.Add(task);
+            var task = _Service.Create(input);
             return CreatedAtAction(nameof(GetById), new { id = task.Id }, task);
         }
 
         [HttpPut("{id}")]
         public ActionResult<ToDo> Update(int id, [FromBody] UpdateToDoDto input)
         {
-
-            var task = toDoList.FirstOrDefault(t => t.Id == id);
+            var task = _Service.Update(id, input);
             if (task == null) return NotFound();
-
-            task.Title = input.Title;
-            task.Description = input.Description;
-            task.Status = input.Status;
-
             return Ok(task);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var task = toDoList.FirstOrDefault(t => t.Id == id);
-            if (task == null) return NotFound();
-
-            toDoList.Remove(task);
+            var task = _Service.Delete(id);
+            if (!task) return NotFound();
             return NoContent();
         }
     }

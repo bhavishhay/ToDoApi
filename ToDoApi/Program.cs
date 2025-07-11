@@ -1,3 +1,4 @@
+using ToDoApi.Services;
 
 namespace ToDoApi
 {
@@ -13,6 +14,7 @@ namespace ToDoApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<ToDoService>();
 
             var app = builder.Build();
 
