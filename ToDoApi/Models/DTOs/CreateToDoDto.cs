@@ -1,6 +1,6 @@
 ﻿namespace ToDoApi.Models.DTOs
 {
-    public class ToDoRequest
+    public class CreateToDoDto
     {
 
         public string Title { get; set; }

@@ -26,7 +26,7 @@ namespace ToDoApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ToDo> Create([FromBody] ToDoRequest input)
+        public ActionResult<ToDo> Create([FromBody] CreateToDoDto input)
         {
 
             var task = new ToDo
@@ -42,7 +42,7 @@ namespace ToDoApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<ToDo> Update(int id, [FromBody] ToDoResponse input)
+        public ActionResult<ToDo> Update(int id, [FromBody] UpdateToDoDto input)
         {
 
             var task = toDoList.FirstOrDefault(t => t.Id == id);
