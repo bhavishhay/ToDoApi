@@ -52,16 +52,16 @@ namespace ToDoApi.Controllers
             if (!result) return NotFound(new ApiResponse<string>(false, "User not found - please input valid User ID", null));
             return Ok(new ApiResponse<string>(true, "User deleted successfully", null));
         }
-        [HttpDelete]
-        public IActionResult DeleteAll()
-        {
-            var users = _Service.GetAll();
-            if (!users.Any()) return NotFound(new ApiResponse<string>(false, "No Users found - list is empty", null));
-            foreach (var user in users)
-            {
-                _Service.Delete(user.UserId);
-            }
-            return Ok(new ApiResponse<string>(true, "All Users deleted successfully", null));
-        }
+        //[HttpDelete]
+        //public IActionResult DeleteAll()
+        //{
+        //    var users = _Service.GetAll();
+        //    if (!users.Any()) return NotFound(new ApiResponse<string>(false, "No Users found - list is empty", null));
+        //    foreach (var user in users)
+        //    {
+        //        _Service.Delete(user.UserId);
+        //    }
+        //    return Ok(new ApiResponse<string>(true, "All Users deleted successfully", null));
+        //}
     }
 }
