@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using ToDoApi.Models.DTOs;
 using ToDoApi.Validators;
 using ToDoApi.Services;
+using ToDoApi.Services.Interfaces;
 
 namespace ToDoApi
 {
@@ -19,6 +20,7 @@ namespace ToDoApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddSingleton<IToDoService, ToDoService>();
+            builder.Services.AddSingleton<IUserService, UserService>();
             builder.Services.AddFluentValidationAutoValidation();// for automatic model validation
 
             //Register FluentValidation validators

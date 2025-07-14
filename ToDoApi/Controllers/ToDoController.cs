@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoApi.Models;
 using ToDoApi.Models.DTOs;
-using ToDoApi.Services;
+using ToDoApi.Services.Interfaces;
 
 namespace ToDoApi.Controllers
 {
@@ -21,6 +21,10 @@ namespace ToDoApi.Controllers
         public ActionResult<IEnumerable<ToDo>> GetAll()
         {   
             var task = _Service.GetAll();
+            if (!task.Any())
+            {
+                return Ok(new ApiResponse<IEnumerable<ToDo>>(true, "No Task Found - list is empty", task));
+            }
             return Ok(new ApiResponse<IEnumerable<ToDo>>(true, " All Tasks fetched successfully", task));
         }
 

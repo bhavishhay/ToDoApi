@@ -1,7 +1,7 @@
 ﻿using ToDoApi.Models;
 using ToDoApi.Models.DTOs;
 
-namespace ToDoApi.Services
+namespace ToDoApi.Services.Interfaces
 {
     public interface IToDoService
     {
