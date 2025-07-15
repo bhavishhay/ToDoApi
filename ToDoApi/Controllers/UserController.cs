@@ -10,45 +10,51 @@ namespace ToDoApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _Service;
+
         public UserController(IUserService service)
         {
             _Service = service;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<User>> GetAll()
+        public async Task<ActionResult<IEnumerable<User>>> GetAll()
         {
-            var users = _Service.GetAll();
+            var users = await _Service.GetAllAsync();
             if (!users.Any())
             {
                 return Ok(new ApiResponse<IEnumerable<User>>(true, "No User Found - list is empty", users));
             }
-            return Ok(new ApiResponse<IEnumerable<User>>(true, "All Users fetched successfully", users));
+            return Ok(new ApiResponse<IEnumerable<User>>(true, " All Users fetched successfully", users));
         }
+
         [HttpGet("{id}")]  
-        public ActionResult<User> GetById(int id)
+        public async Task<ActionResult<User>> GetById(int id)
         {
-            var user = _Service.GetById(id);
+            var user = await _Service.GetByIdAsync(id);
             if (user == null) return NotFound(new ApiResponse<User>(false, "User not found", null));
             return Ok(new ApiResponse<User>(true, "User found and fetched successfully", user));
         }
+
         [HttpPost]
-        public ActionResult<User> Create([FromBody] CreateUserDto input)
+        public async Task<ActionResult<User>> Create([FromBody] CreateUserDto input)
         {
-            var user = _Service.Create(input);
+
+            var user = await _Service.CreateAsync(input);
             return CreatedAtAction(nameof(GetById), new { id = user.UserId }, new ApiResponse<User>(true, "New User created successfully", user));
         }
+
         [HttpPut("{id}")]
-        public ActionResult<User> Update(int id, [FromBody] UpdateUserDto input)
+        public async Task<ActionResult<User>> Update(int id, [FromBody] UpdateUserDto input)
         {
-            var user = _Service.Update(id, input);
+            var user = await _Service.UpdateAsync(id, input);
             if (user == null) return NotFound(new ApiResponse<User>(false, "User not found", null));
             return Ok(new ApiResponse<User>(true, "User updated successfully", user));
         }
+
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _Service.Delete(id);
+            var result = await _Service.DeleteAsync(id);
             if (!result) return NotFound(new ApiResponse<string>(false, "User not found - please input valid User ID", null));
             return Ok(new ApiResponse<string>(true, "User deleted successfully", null));
         }

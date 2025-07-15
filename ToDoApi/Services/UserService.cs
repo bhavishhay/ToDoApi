@@ -1,4 +1,6 @@
-﻿using ToDoApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ToDoApi.Data;
+using ToDoApi.Models;
 using ToDoApi.Models.DTOs;
 using ToDoApi.Services.Interfaces;
 
@@ -6,17 +8,22 @@ namespace ToDoApi.Services
 {
     public class UserService: IUserService
     {
-        private readonly List<User> _Users = new();
+        private readonly AppDbContext _context;
+
+        public UserService(AppDbContext context)
+        {
+            _context = context;
+        }
         private int _nextId = 1;
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return _Users;
+            return await _context.Users.ToListAsync();
         }
-        public User GetById(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
-            return _Users.FirstOrDefault(u => u.UserId == id);
+            return await _context.Users.FindAsync(id);
         }
-        public User Create(CreateUserDto input)
+        public async Task<User> CreateAsync(CreateUserDto input)
         {
             var user = new User
             {
@@ -25,23 +32,28 @@ namespace ToDoApi.Services
                 Email = input.Email,
                 Address = input.Address
             };
-            _Users.Add(user);
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
             return user;
         }
-        public User Update(int id, UpdateUserDto input)
+        public async Task<User> UpdateAsync(int id, UpdateUserDto input)
         {
-            var user = GetById(id);
+            var user = await GetByIdAsync(id);
             if (user == null) return null;
+
             user.Name = input.Name;
             user.Email = input.Email;
             user.Address = input.Address;
+
+            await _context.SaveChangesAsync();
             return user;
         }
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var user = GetById(id);
+            var user = await GetByIdAsync(id);
             if (user == null) return false;
-            _Users.Remove(user);
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
             return true;
         }
     }

@@ -4,6 +4,8 @@ using ToDoApi.Models.DTOs;
 using ToDoApi.Validators;
 using ToDoApi.Services;
 using ToDoApi.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using ToDoApi.Data;
 
 namespace ToDoApi
 {
@@ -19,16 +21,21 @@ namespace ToDoApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton<IToDoService, ToDoService>();
-            builder.Services.AddSingleton<IUserService, UserService>();
+            builder.Services.AddScoped<IToDoService, ToDoService>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddFluentValidationAutoValidation();// for automatic model validation
+            builder.Services.AddDbContext<AppDbContext>(options =>
+              options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            //Register FluentValidation validators
-            builder.Services.AddValidatorsFromAssemblyContaining<CreateToDoDtoValidator>();
+            //Register FluentValidation validators - combine way
+        //    builder.Services.AddValidatorsFromAssemblyContaining<CreateToDoDtoValidator>();
 
             // Register FluentValidation validators - one by one
-            //builder.Services.AddScoped<IValidator<ToDoRequest>, ToDoRequestValidator>();
-            //builder.Services.AddScoped<IValidator<ToDoResponse>, ToDoResponseValidator>();
+            builder.Services.AddScoped<IValidator<CreateToDoDto>, CreateToDoDtoValidator>();
+            builder.Services.AddScoped<IValidator<UpdateToDoDto>, UpdateToDoDtoValidator>();
+            builder.Services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
+            builder.Services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
+
 
             var app = builder.Build();
 

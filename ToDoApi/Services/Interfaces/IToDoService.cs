@@ -5,10 +5,10 @@ namespace ToDoApi.Services.Interfaces
 {
     public interface IToDoService
     {
-        IEnumerable<ToDo> GetAll();
-        ToDo GetById(int id);
-        ToDo Create(CreateToDoDto input);
-        ToDo Update(int id, UpdateToDoDto input);
-        bool Delete(int id);
+        Task<IEnumerable<ToDo>> GetAllAsync();
+        Task<ToDo> GetByIdAsync(int id);
+        Task<ToDo> CreateAsync(CreateToDoDto input);
+        Task<ToDo> UpdateAsync(int id, UpdateToDoDto input);
+        Task<bool> DeleteAsync(int id);
     }
 }

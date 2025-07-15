@@ -1,4 +1,7 @@
-﻿using ToDoApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+//using System.Threading.Tasks;
+using ToDoApi.Data;
+using ToDoApi.Models;
 using ToDoApi.Models.DTOs;
 using ToDoApi.Services.Interfaces;
 
@@ -6,18 +9,23 @@ namespace ToDoApi.Services
 {
     public class ToDoService : IToDoService
     {
-        private readonly List<ToDo> _Tasks = new();
+        private readonly AppDbContext _context;
+
+        public ToDoService(AppDbContext context)
+        {
+            _context = context;
+        }
         private int _nextId = 1;
 
-        public IEnumerable<ToDo> GetAll()
+        public async Task<IEnumerable<ToDo>> GetAllAsync()
         {
-            return _Tasks;
+            return await _context.ToDos.ToListAsync();
         }
-        public ToDo GetById(int id)
+        public async Task<ToDo> GetByIdAsync(int id)
         {
-            return _Tasks.FirstOrDefault(t => t.Id == id);
+            return await _context.ToDos.FindAsync(id);
         }
-        public ToDo Create(CreateToDoDto input)
+        public async Task<ToDo> CreateAsync(CreateToDoDto input)
         {
             var task = new ToDo
             {
@@ -26,25 +34,31 @@ namespace ToDoApi.Services
                 Description = input.Description,
                 Status = false
             };
-            _Tasks.Add(task);
+            _context.ToDos.Add(task);
+            await _context.SaveChangesAsync();
             return task;
         }
 
-        public ToDo Update(int id, UpdateToDoDto input)
+        public async Task<ToDo> UpdateAsync(int id, UpdateToDoDto input)
         {
-            var task = GetById(id);
+            var task = await GetByIdAsync(id);
             if (task == null) return null;
+
             task.Title = input.Title;
             task.Description = input.Description;
             task.Status = input.Status;
+
+            // _context.ToDos.Update(task);
+            await _context.SaveChangesAsync();
             return task;
         }
 
-        public bool Delete(int id) 
+        public async Task<bool> DeleteAsync(int id) 
         { 
-            var task = GetById(id);
+            var task = await GetByIdAsync(id);
             if (task == null) return false;
-            _Tasks.Remove(task);
+            _context.ToDos.Remove(task);
+            await _context.SaveChangesAsync();
             return true;
 
 
