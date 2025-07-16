@@ -3,6 +3,7 @@ using ToDoApi.Data;
 using ToDoApi.Models;
 using ToDoApi.Models.DTOs;
 using ToDoApi.Services.Interfaces;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ToDoApi.Services
 {
@@ -14,10 +15,70 @@ namespace ToDoApi.Services
         {
             _context = context;
         }
-        private int _nextId = 1;
-        public async Task<IEnumerable<User>> GetAllAsync()
+        //private int _nextId = 1;
+        public async Task<IEnumerable<User>> GetAllAsync(UserQuaryFilterSortingParameters QuaryParameters)
         {
-            return await _context.Users.ToListAsync();
+            var query = _context.Users.AsQueryable();
+
+            // Filtering
+            if (!string.IsNullOrEmpty(QuaryParameters.Name))
+            {
+                query = query.Where(t => t.Name.Contains(QuaryParameters.Name));
+            }
+            if (!string.IsNullOrEmpty(QuaryParameters.Email))
+            {
+                query = query.Where(t => t.Email.Contains(QuaryParameters.Email));
+            }
+            if (!string.IsNullOrEmpty(QuaryParameters.Address))
+            {
+                query = query.Where(t => t.Address.Contains(QuaryParameters.Address));
+            }
+
+            // Sorting
+            if (!string.IsNullOrEmpty(QuaryParameters.SortBy))
+            {
+                switch (QuaryParameters.SortBy)
+                {
+                    case "Name":
+                        query = QuaryParameters.SortDescending.HasValue && QuaryParameters.SortDescending.Value
+                            ? query.OrderByDescending(t => t.Name)
+                            : query.OrderBy(t => t.Name);
+                        break;
+
+                    case "Email":
+                        query = QuaryParameters.SortDescending.HasValue && QuaryParameters.SortDescending.Value
+                            ? query.OrderByDescending(t => t.Email)
+                            : query.OrderBy(t => t.Email);
+                        break;
+
+                    case "Address":
+                        query = QuaryParameters.SortDescending.HasValue && QuaryParameters.SortDescending.Value
+                            ? query.OrderByDescending(t => t.Address)
+                            : query.OrderBy(t => t.Address);
+                        break;
+
+                    case "UserId":
+                        query = QuaryParameters.SortDescending.HasValue && QuaryParameters.SortDescending.Value
+                            ? query.OrderByDescending(t => t.UserId)
+                            : query.OrderBy(t => t.UserId);
+                        break;
+
+                    default:
+
+                        break;
+                }
+                if ((string.IsNullOrEmpty(QuaryParameters.SortBy) && (QuaryParameters.SortDescending == true)))
+                {
+                    query = query.OrderByDescending(t => t.UserId);
+                }
+            }
+
+            // Paging
+            query = query
+            .Skip((QuaryParameters.PageNumber - 1) * QuaryParameters.PageSize)
+            .Take(QuaryParameters.PageSize);
+
+            return await query.ToListAsync();
         }
         public async Task<User> GetByIdAsync(int id)
         {
@@ -27,7 +88,7 @@ namespace ToDoApi.Services
         {
             var user = new User
             {
-                UserId = _nextId++,
+               // UserId = _nextId++,
                 Name = input.Name,
                 Email = input.Email,
                 Address = input.Address

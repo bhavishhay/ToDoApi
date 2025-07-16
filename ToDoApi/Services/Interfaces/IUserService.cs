@@ -5,7 +5,7 @@ namespace ToDoApi.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> GetAllAsync();
+        Task<IEnumerable<User>> GetAllAsync(UserQuaryFilterSortingParameters QuaryParameters);
         Task<User> GetByIdAsync(int id);
         Task<User> CreateAsync(CreateUserDto input);
         Task<User> UpdateAsync(int id, UpdateUserDto input);

@@ -17,9 +17,9 @@ namespace ToDoApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAll()
+        public async Task<ActionResult<IEnumerable<User>>> GetAll([FromQuery] UserQuaryFilterSortingParameters QuaryParameters)
         {
-            var users = await _Service.GetAllAsync();
+            var users = await _Service.GetAllAsync(QuaryParameters);
             if (!users.Any())
             {
                 return Ok(new ApiResponse<IEnumerable<User>>(true, "No User Found - list is empty", users));

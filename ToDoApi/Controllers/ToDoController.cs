@@ -17,15 +17,16 @@ namespace ToDoApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ToDo>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ToDo>>> GetAll([FromQuery] ToDoQuaryFilterSortingParameters QuaryParameters)
         {   
-            var task = await _Service.GetAllAsync();
+            var task = await _Service.GetAllAsync(QuaryParameters);
             if (!task.Any())
             {
                 return Ok(new ApiResponse<IEnumerable<ToDo>>(true, "No Task Found - list is empty", task));
             }
             return Ok(new ApiResponse<IEnumerable<ToDo>>(true, " All Tasks fetched successfully", task));
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ToDo>> GetById(int id)
