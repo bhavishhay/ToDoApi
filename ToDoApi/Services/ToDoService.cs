@@ -19,16 +19,18 @@ namespace ToDoApi.Services
 
         public async Task<IEnumerable<ToDo>> GetAllAsync(ToDoQuaryFilterSortingParameters QuaryParameters)
         {
-            var query = _context.ToDos.AsQueryable();
+            var query = _context.ToDos.AsNoTracking().AsQueryable();
 
             // Filtering
             if (!string.IsNullOrEmpty(QuaryParameters.Title))
             {
                 query = query.Where(t => t.Title.Contains(QuaryParameters.Title));
+                //query = query.Where(t => EF.Functions.Like(t.Title, $"%{QuaryParameters.Title}%")); //alternative way to filter using EF.Functions.Like
             }
             if (QuaryParameters.Status.HasValue)
             {
                 query = query.Where(t => t.Status == QuaryParameters.Status.Value);
+
             }
 
             // Sorting
@@ -78,6 +80,9 @@ namespace ToDoApi.Services
             query = query
                 .Skip((QuaryParameters.PageNumber - 1) * QuaryParameters.PageSize)
                 .Take(QuaryParameters.PageSize);
+
+            Console.WriteLine(query.ToQueryString());
+
 
             return await query.ToListAsync();
         }    

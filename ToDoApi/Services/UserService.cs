@@ -18,20 +18,24 @@ namespace ToDoApi.Services
         //private int _nextId = 1;
         public async Task<IEnumerable<User>> GetAllAsync(UserQuaryFilterSortingParameters QuaryParameters)
         {
-            var query = _context.Users.AsQueryable();
+            var query = _context.Users.AsNoTracking().AsQueryable();
 
             // Filtering
             if (!string.IsNullOrEmpty(QuaryParameters.Name))
             {
                 query = query.Where(t => t.Name.Contains(QuaryParameters.Name));
+                //query = query.Where(t => EF.Functions.Like(t.Name, $"%{QuaryParameters.Name}%")); //alternative way to filter using EF.Functions.Like
+
             }
             if (!string.IsNullOrEmpty(QuaryParameters.Email))
             {
                 query = query.Where(t => t.Email.Contains(QuaryParameters.Email));
+                //query = query.Where(t => EF.Functions.Like(t.Email, $"%{QuaryParameters.Email}%")); //alternative way to filter using EF.Functions.Like
             }
             if (!string.IsNullOrEmpty(QuaryParameters.Address))
             {
                 query = query.Where(t => t.Address.Contains(QuaryParameters.Address));
+                //query = query.Where(t => EF.Functions.Like(t.Address, $"%{QuaryParameters.Address}%"));  //alternative way to filter using EF.Functions.Like
             }
 
             // Sorting
@@ -77,6 +81,8 @@ namespace ToDoApi.Services
             query = query
             .Skip((QuaryParameters.PageNumber - 1) * QuaryParameters.PageSize)
             .Take(QuaryParameters.PageSize);
+
+            Console.WriteLine(query.ToQueryString());
 
             return await query.ToListAsync();
         }
