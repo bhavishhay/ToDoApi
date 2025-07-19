@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ToDoApi.Models;
-using ToDoApi.Models.DTOs;
-using ToDoApi.Services.Interfaces;
+using ToDoApi.Application.Interfaces.Services;
+using ToDoApi.Application.QueryParameters;
+using ToDoApi.Application.DTOs;
+using ToDoApi.Core;
+using ToDoApi.Core.Entities;
 
 namespace ToDoApi.Controllers
 {

@@ -23,4 +23,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoApi.Application\ToDoApi.Application.csproj" />
+    <ProjectReference Include="..\ToDoApi.Infrastructure\ToDoApi.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

@@ -1,11 +1,14 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using ToDoApi.Models.DTOs;
-using ToDoApi.Validators;
-using ToDoApi.Services;
-using ToDoApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using ToDoApi.Data;
+using ToDoApi.Application.DTOs;
+using ToDoApi.Application.Interfaces.IRepositories;
+using ToDoApi.Application.Interfaces.Services;
+using ToDoApi.Application.Services;
+using ToDoApi.Application.Validators;
+using ToDoApi.Infrastructure.Data;
+using ToDoApi.Infrastructure.Repositories;
+using ToDoApi.Validators;
 
 namespace ToDoApi
 {
@@ -18,17 +21,27 @@ namespace ToDoApi
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Register the DbContext 
+            builder.Services.AddDbContext<AppDbContext>(options =>
+             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Register the Repositories
+            builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            // Register the Services 
             builder.Services.AddScoped<IToDoService, ToDoService>();
             builder.Services.AddScoped<IUserService, UserService>();
+           
+            // Register FluentValidation ,AutoMapper
             builder.Services.AddFluentValidationAutoValidation();// for automatic model validation
-            builder.Services.AddDbContext<AppDbContext>(options =>
-              options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+           
 
             //Register FluentValidation validators - combine way
-        //    builder.Services.AddValidatorsFromAssemblyContaining<CreateToDoDtoValidator>();
+            //builder.Services.AddValidatorsFromAssemblyContaining<CreateToDoDtoValidator>();
 
             // Register FluentValidation validators - one by one
             builder.Services.AddScoped<IValidator<CreateToDoDto>, CreateToDoDtoValidator>();
