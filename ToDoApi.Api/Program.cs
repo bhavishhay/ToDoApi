@@ -1,16 +1,16 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ToDoApi.Api.Middleware;
 using ToDoApi.Application.DTOs;
+using ToDoApi.Application.Features.ToDos.Commands;
 using ToDoApi.Application.Interfaces.IRepositories;
 //using ToDoApi.Application.Interfaces.Services;
 //using ToDoApi.Application.Services;
 using ToDoApi.Application.Validators;
 using ToDoApi.Infrastructure.Data;
 using ToDoApi.Infrastructure.Repositories;
-using System.Reflection;
-using MediatR;
-using ToDoApi.Application.Features.ToDos.Commands;
 
 namespace ToDoApi.Api
 {
@@ -60,7 +60,7 @@ namespace ToDoApi.Api
 
             var app = builder.Build();
 
-            app.UseExceptionHandler("/error");
+            app.UseMiddleware<ExceptionMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

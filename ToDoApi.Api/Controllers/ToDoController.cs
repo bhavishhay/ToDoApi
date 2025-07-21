@@ -25,6 +25,10 @@ namespace ToDoApi.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ToDo>>> GetAll([FromQuery] ToDoQuaryFilterSortingParameters QuaryParameters)
         {
+             // This line is commented out to avoid throwing an exception for testing purposes.
+            //throw new Exception("This is a test error for endpoints.");
+            
+
             // Create the query object
             var query = new GetAllToDosQuery(QuaryParameters);
             // Send the query via MediatR
