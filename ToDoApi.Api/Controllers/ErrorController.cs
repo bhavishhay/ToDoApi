@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ToDoApi.Controllers
+namespace ToDoApi.Api.Controllers
 {
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]

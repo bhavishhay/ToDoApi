@@ -8,12 +8,11 @@ using ToDoApi.Application.Services;
 using ToDoApi.Application.Validators;
 using ToDoApi.Infrastructure.Data;
 using ToDoApi.Infrastructure.Repositories;
-using ToDoApi.Validators;
 using System.Reflection;
 using MediatR;
 using ToDoApi.Application.Features.ToDos.Commands;
 
-namespace ToDoApi
+namespace ToDoApi.Api
 {
     public class Program
     {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36221.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoApi", "ToDoApi\ToDoApi.csproj", "{D6B96901-5F22-4B80-8E1B-CE5476A4007F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoApi.Api", "ToDoApi.Api\ToDoApi.Api.csproj", "{D6B96901-5F22-4B80-8E1B-CE5476A4007F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoApi.Application", "ToDoApi.Application\ToDoApi.Application.csproj", "{81084442-BAB4-4AEC-893A-E6B6F29FF982}"
 EndProject

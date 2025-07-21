@@ -5,7 +5,7 @@ using ToDoApi.Application.DTOs;
 using ToDoApi.Domain;
 using ToDoApi.Domain.Entities;
 
-namespace ToDoApi.Controllers
+namespace ToDoApi.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using ToDoApi.Application.DTOs;
 
-namespace ToDoApi.Validators
+namespace ToDoApi.Application.Validators
 {
     public class CreateUserDtoValidator : AbstractValidator<CreateUserDto>
     {

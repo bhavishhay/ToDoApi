@@ -7,7 +7,7 @@ using ToDoApi.Domain.Entities;
 using ToDoApi.Application.Features.ToDos.Commands;
 using ToDoApi.Application.Features.ToDos.Queries;
 
-namespace ToDoApi.Controllers
+namespace ToDoApi.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
