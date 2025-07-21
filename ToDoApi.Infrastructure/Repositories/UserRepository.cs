@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoApi.Application.Interfaces.IRepositories;
 using ToDoApi.Application.QueryParameters;
-using ToDoApi.Core.Entities;
+using ToDoApi.Domain.Entities;
 using ToDoApi.Infrastructure.Data;
 
 namespace ToDoApi.Infrastructure.Repositories

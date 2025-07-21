@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ToDoApi.Core.Entities;
+using ToDoApi.Domain.Entities;
 
 namespace ToDoApi.Infrastructure.Data
 {

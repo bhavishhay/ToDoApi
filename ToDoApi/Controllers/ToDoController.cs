@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ToDoApi.Application.Interfaces.Services;
+using ToDoApi.Application.Interfaces.Services; // <-- Remove this
 using ToDoApi.Application.QueryParameters;
 using ToDoApi.Application.DTOs;
-using ToDoApi.Core;
-using ToDoApi.Core.Entities;
+using ToDoApi.Domain;
+using ToDoApi.Domain.Entities;
+using ToDoApi.Application.Features.ToDos.Commands;
+using ToDoApi.Application.Features.ToDos.Queries;
 
 namespace ToDoApi.Controllers
 {
@@ -61,14 +63,5 @@ namespace ToDoApi.Controllers
             if (!task) return NotFound(new ApiResponse<string>(false, "Task not found", null));
             return Ok(new ApiResponse<string>(true, "Task deleted successfully", null));
         }
-
-        /*
-        [HttpGet("make_error")]
-        public IActionResult MakeError()
-        {
-           
-            throw new Exception("This is a test error from MakeError endpoint.");
-        }
-        */
     }
 }

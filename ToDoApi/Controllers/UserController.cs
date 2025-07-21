@@ -2,8 +2,8 @@
 using ToDoApi.Application.Interfaces.Services;
 using ToDoApi.Application.QueryParameters;
 using ToDoApi.Application.DTOs;
-using ToDoApi.Core;
-using ToDoApi.Core.Entities;
+using ToDoApi.Domain;
+using ToDoApi.Domain.Entities;
 
 namespace ToDoApi.Controllers
 {
@@ -29,7 +29,7 @@ namespace ToDoApi.Controllers
             return Ok(new ApiResponse<IEnumerable<User>>(true, " All Users fetched successfully", users));
         }
 
-        [HttpGet("{id}")]  
+        [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetById(int id)
         {
             var user = await _Service.GetByIdAsync(id);
@@ -60,16 +60,5 @@ namespace ToDoApi.Controllers
             if (!result) return NotFound(new ApiResponse<string>(false, "User not found - please input valid User ID", null));
             return Ok(new ApiResponse<string>(true, "User deleted successfully", null));
         }
-        //[HttpDelete]
-        //public IActionResult DeleteAll()
-        //{
-        //    var users = _Service.GetAll();
-        //    if (!users.Any()) return NotFound(new ApiResponse<string>(false, "No Users found - list is empty", null));
-        //    foreach (var user in users)
-        //    {
-        //        _Service.Delete(user.UserId);
-        //    }
-        //    return Ok(new ApiResponse<string>(true, "All Users deleted successfully", null));
-        //}
     }
 }

@@ -2,7 +2,7 @@
 using ToDoApi.Application.Interfaces.IRepositories;
 using ToDoApi.Application.Interfaces.Services;
 using ToDoApi.Application.QueryParameters;
-using ToDoApi.Core.Entities;
+using ToDoApi.Domain.Entities;
 
 namespace ToDoApi.Application.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace ToDoApi.Core.Entities
+﻿namespace ToDoApi.Domain.Entities
 {
     // [Index(nameof(Email), IsUnique = true)] // Index on Title for faster queries by DataAnnotations
     public class User

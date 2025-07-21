@@ -1,5 +1,5 @@
 ﻿using ToDoApi.Application.QueryParameters;
-using ToDoApi.Core.Entities; 
+using ToDoApi.Domain.Entities; 
 using ToDoApi.Application.DTOs;
 
 namespace ToDoApi.Application.Interfaces.Services

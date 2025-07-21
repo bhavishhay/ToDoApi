@@ -9,6 +9,9 @@ using ToDoApi.Application.Validators;
 using ToDoApi.Infrastructure.Data;
 using ToDoApi.Infrastructure.Repositories;
 using ToDoApi.Validators;
+using System.Reflection;
+using MediatR;
+using ToDoApi.Application.Features.ToDos.Commands;
 
 namespace ToDoApi
 {
@@ -32,10 +35,18 @@ namespace ToDoApi
             builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+            // Register MediatR
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IToDoService).Assembly));
+
+            // Register MediatR
+           // builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateToDoCommand).Assembly));
+
+            
             // Register the Services 
             builder.Services.AddScoped<IToDoService, ToDoService>();
             builder.Services.AddScoped<IUserService, UserService>();
-           
+            
+
             // Register FluentValidation ,AutoMapper
             builder.Services.AddFluentValidationAutoValidation();// for automatic model validation
            

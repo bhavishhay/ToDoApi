@@ -1,4 +1,4 @@
-﻿using ToDoApi.Core.Entities;
+﻿using ToDoApi.Domain.Entities;
 using ToDoApi.Application.QueryParameters;
 
 namespace ToDoApi.Application.Interfaces.IRepositories
@@ -10,6 +10,6 @@ namespace ToDoApi.Application.Interfaces.IRepositories
         Task<User> AddAsync(User user);
         Task<User> UpdateAsync(User user);
         Task<bool> DeleteAsync(int id);
-       // Task<bool> ExistsAsync(int id);
+       
     }
 }
