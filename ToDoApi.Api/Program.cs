@@ -3,8 +3,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using ToDoApi.Application.DTOs;
 using ToDoApi.Application.Interfaces.IRepositories;
-using ToDoApi.Application.Interfaces.Services;
-using ToDoApi.Application.Services;
+//using ToDoApi.Application.Interfaces.Services;
+//using ToDoApi.Application.Services;
 using ToDoApi.Application.Validators;
 using ToDoApi.Infrastructure.Data;
 using ToDoApi.Infrastructure.Repositories;
@@ -34,17 +34,15 @@ namespace ToDoApi.Api
             builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+          
             // Register MediatR
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IToDoService).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateToDoCommand).Assembly));
 
-            // Register MediatR
-           // builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateToDoCommand).Assembly));
-
-            
+            /*
             // Register the Services 
             builder.Services.AddScoped<IToDoService, ToDoService>();
             builder.Services.AddScoped<IUserService, UserService>();
-            
+            */
 
             // Register FluentValidation ,AutoMapper
             builder.Services.AddFluentValidationAutoValidation();// for automatic model validation
