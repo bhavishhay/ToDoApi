@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoApi.Application.DTOs;
 using ToDoApi.Application.Features.ToDos.Commands;
 using ToDoApi.Application.Features.ToDos.Queries;
-//using ToDoApi.Application.Interfaces.Services; 
 using ToDoApi.Application.QueryParameters;
 using ToDoApi.Domain;
 using ToDoApi.Domain.Entities;

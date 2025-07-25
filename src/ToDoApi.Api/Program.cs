@@ -6,8 +6,6 @@ using ToDoApi.Api.Middleware;
 using ToDoApi.Application.DTOs;
 using ToDoApi.Application.Features.ToDos.Commands;
 using ToDoApi.Application.Interfaces.IRepositories;
-//using ToDoApi.Application.Interfaces.Services;
-//using ToDoApi.Application.Services;
 using ToDoApi.Application.Validators;
 using ToDoApi.Infrastructure.Data;
 using ToDoApi.Infrastructure.Repositories;
