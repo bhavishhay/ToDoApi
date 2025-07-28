@@ -81,6 +81,8 @@ namespace ToDoApi.Api
 
             app.UseMiddleware<ExceptionMiddleware>();
 
+            app.UseSerilogRequestLogging();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -90,7 +92,7 @@ namespace ToDoApi.Api
 
             app.UseHttpsRedirection();
 
-            app.UseSerilogRequestLogging();
+            //app.UseSerilogRequestLogging();
 
             app.UseAuthorization();
 
