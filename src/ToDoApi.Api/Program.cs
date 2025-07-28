@@ -9,6 +9,9 @@ using ToDoApi.Application.Interfaces.IRepositories;
 using ToDoApi.Application.Validators;
 using ToDoApi.Infrastructure.Data;
 using ToDoApi.Infrastructure.Repositories;
+using ToDoApi.Api.Models; 
+using Serilog;
+
 
 namespace ToDoApi.Api
 {
@@ -16,7 +19,23 @@ namespace ToDoApi.Api
     {
         public static void Main(string[] args)
         {
+            // Serilog Configuration
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development"}.json", optional: true)
+                .Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration) // Read Serilog config from appsettings.json
+                .CreateLogger();
+
+            Log.Information("Starting ToDo API web host.");
+
             var builder = WebApplication.CreateBuilder(args);
+
+            // --- Serilog Integration with Host Builder
+            builder.Host.UseSerilog();
 
             // Add services to the container.
 
@@ -55,6 +74,8 @@ namespace ToDoApi.Api
             builder.Services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
             builder.Services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
 
+            // IOptions Configuration Registration
+            builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
             var app = builder.Build();
 

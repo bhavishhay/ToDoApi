@@ -52,11 +52,7 @@ namespace ToDoApi.Infrastructure.Repositories
                     default:
                         break;
                 }
-                if ((string.IsNullOrEmpty(quaryParameters.SortBy) && (quaryParameters.SortDescending == true)))
-                {
-                    query = query.OrderByDescending(t => t.Id);
-                }
-
+                
                 // Note: The following commented code is an alternative way to handle sorting using EF.Property which allows dynamic property access. Suggested by visual studio 2022.
                 //if (QuaryParameters.SortDescending.HasValue && QuaryParameters.SortDescending.Value)
                 //{
@@ -67,9 +63,22 @@ namespace ToDoApi.Infrastructure.Repositories
                 //    query = query.OrderBy(t => EF.Property<object>(t, QuaryParameters.SortBy));
                 //}
             }
-            // Pagination
-            query = query.Skip((quaryParameters.PageNumber - 1) * quaryParameters.PageSize)
-                             .Take(quaryParameters.PageSize);
+            if ((string.IsNullOrEmpty(quaryParameters.SortBy) && (quaryParameters.SortDescending == true)))
+            {
+                query = query.OrderByDescending(t => t.Id);
+            }
+            else if ((string.IsNullOrEmpty(quaryParameters.SortBy) && (quaryParameters.SortDescending == false)))
+            {
+                query = query.OrderBy(t => t.Id);
+            }
+            else
+            {
+                query = query.OrderBy(t => t.Id);
+            }
+
+                // Pagination
+                query = query.Skip((quaryParameters.PageNumber - 1) * quaryParameters.PageSize)
+                                 .Take(quaryParameters.PageSize);
 
             Console.WriteLine(query.ToQueryString());
 
