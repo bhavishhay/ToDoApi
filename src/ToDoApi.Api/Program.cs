@@ -90,6 +90,8 @@ namespace ToDoApi.Api
 
             app.UseHttpsRedirection();
 
+            app.UseSerilogRequestLogging();
+
             app.UseAuthorization();
 
 
