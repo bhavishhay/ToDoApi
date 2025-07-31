@@ -9,7 +9,7 @@ using ToDoApi.Application.Interfaces.IRepositories;
 using ToDoApi.Application.Validators;
 using ToDoApi.Infrastructure.Data;
 using ToDoApi.Infrastructure.Repositories;
-using ToDoApi.Api.Models; 
+using ToDoApi.Api.Models;
 using Serilog;
 
 
@@ -51,7 +51,7 @@ namespace ToDoApi.Api
             builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-          
+
             // Register MediatR
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateToDoCommand).Assembly));
 
@@ -63,7 +63,7 @@ namespace ToDoApi.Api
 
             // Register FluentValidation ,AutoMapper
             builder.Services.AddFluentValidationAutoValidation();// for automatic model validation
-           
+
 
             //Register FluentValidation validators - combine way
             //builder.Services.AddValidatorsFromAssemblyContaining<CreateToDoDtoValidator>();
@@ -78,6 +78,25 @@ namespace ToDoApi.Api
             builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
             var app = builder.Build();
+
+            // --- START: Add this section for migrations ---
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var dbContext = services.GetRequiredService<AppDbContext>();
+                    dbContext.Database.Migrate(); // This applies any pending migrations
+                    app.Logger.LogInformation("Database migrations applied successfully.");
+                }
+                catch (Exception ex)
+                {
+                    app.Logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+
+                }
+            }
+            // --- END: Add this section for migrations ---
 
             app.UseMiddleware<ExceptionMiddleware>();
 
@@ -96,13 +115,9 @@ namespace ToDoApi.Api
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
         }
     }
 }
-
-
-
